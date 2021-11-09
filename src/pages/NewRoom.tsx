@@ -5,12 +5,11 @@ import logoImg from '../img/logo.svg'
 import '../styles/auth.scss'
 
 import { Button } from '../components/Button'
-import { useContext } from 'react'
-import { AuthContext } from '../App'
+import { useAuth } from '../contexts/AuthContext'
 
 
 export function NewRoom() {
-  const { user,  } = useContext(AuthContext)
+  const {user} = useAuth()
 
   return(
     <div id="page-auth">
