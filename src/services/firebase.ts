@@ -13,7 +13,7 @@ import { getFirestore} from 'firebase/firestore/lite';
 }; 
 
 const appFireBase = initializeApp(firebaseConfig);
-export const db =getFirestore(appFireBase)
+export const database =getFirestore(appFireBase)
 export const auth = getAuth()
 
 export default appFireBase
