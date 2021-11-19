@@ -20,6 +20,7 @@ function App() {
             <Route path="/"  element={<Home />} />
             <Route path="/new/room" element={<NewRoom />} />
             <Route path="/rooms/:id" element={<Room />} />
+            
           
       </Routes>
     </AuthProvider>

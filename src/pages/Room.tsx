@@ -1,16 +1,20 @@
-import React from "react";
-
 import "../styles/room.scss"
 
 import imgLogo from "../img/logo.svg"
 import imgCopy from "../img/copy.svg"
 import imgEmptyQuestions from "../img/empty-questions.svg"
 import { Button } from "../components/Button";
-
+import { RoomCode } from "../components/RoomCode";
 
 export function Room() {
-  
 
+  var url = window.location.href.split('rooms/')
+   
+   var codeRoom = url[1];
+   console.log(codeRoom);
+
+    
+  
   return(
 
     <div id="page_room">
@@ -18,8 +22,9 @@ export function Room() {
         <img id="img_logo" src={imgLogo} alt="Logo LetMeAsk" />
         <div id="room_code" >
           <div id="copy" >
-            <img id="img_copy" src={imgCopy} alt="" />
-            <button>CodeRoom</button>
+            <img id="img_copy" src={imgCopy} alt="letme sak" />
+            <RoomCode code={codeRoom} />
+            
           </div>
         </div>
       </header>
