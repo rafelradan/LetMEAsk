@@ -5,15 +5,50 @@ import imgCopy from "../img/copy.svg"
 import imgEmptyQuestions from "../img/empty-questions.svg"
 import { Button } from "../components/Button";
 import { RoomCode } from "../components/RoomCode";
+import { FormEvent, useState } from "react";
+import { useAuth } from "../contexts/AuthContext";
+import { getDatabase, ref } from "@firebase/database";
+import { push, set } from "firebase/database";
 
 export function Room() {
+  const [newQuestion, setNewQuestion] = useState('')
+  const {user} = useAuth()
 
-  var url = window.location.href.split('rooms/')
-   
-   var codeRoom = url[1];
-   console.log(codeRoom);
-
+    var url = window.location.href.split('rooms/')
     
+    var codeRoom = url[1];
+    /* console.log(codeRoom); */
+
+      async function handleSendQuestion(event: FormEvent) {
+        event.preventDefault()
+
+        if (newQuestion.trim() === '') {
+          return;
+        }
+        
+        if (!user) {
+          throw new Error('You need to log in.');
+        }
+
+        const question = {
+          content: newQuestion,
+          author: {
+            name: user.name,
+            avatar: user.avatar
+          },
+          isHighlighted: false,
+          isAnswered: false
+        }
+
+        /* Gravando dados no banco FireBase */
+        const db = getDatabase()
+        const roomsRef = ref(db, `rooms/${codeRoom}/quetions`)
+        const questionUser = push(roomsRef)
+        await set(questionUser, {
+          question
+        })
+
+      }
   
   return(
 
@@ -30,10 +65,14 @@ export function Room() {
       </header>
 
       <main id="page_room_body" >
-        <form>
+        <form onSubmit={handleSendQuestion} >
             <h3>Sala React Q&A</h3>
             <span> 4 perguntas </span>
-            <textarea placeholder="O que você quer perguntar?" ></textarea>
+            <textarea 
+              placeholder="O que você quer perguntar?" 
+              onChange={e =>setNewQuestion(e.target.value)}
+              /* value={newQuestion} */
+            ></textarea>
 
                 <div id="p_and_btn">
                     <div id="text">
@@ -41,7 +80,7 @@ export function Room() {
                     </div>
 
                     <div id="btn">
-                      <Button type="submit" >
+                      <Button type="submit" disabled={!user} >
                         Enviar pergunta
                       </Button>
                     </div>
@@ -59,4 +98,4 @@ export function Room() {
 
     </div>
   )
-} //0:55
+} 
